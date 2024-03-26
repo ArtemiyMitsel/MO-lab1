@@ -1,0 +1,103 @@
+=========================================================
+required precision:0.001
+
+for rosenbrock:
+gd-iterations:284
+gd-evaluations:284
+dich-iterations:299
+dich-evaluations:8970
+
+for quadratic:
+gd-iterations:987
+gd-evaluations:987
+dich-iterations:3
+dich-evaluations:90
+
+rosenbrockvalues:
+gd 0.3752438983987651 0.13780005686590782
+gd_dichotomy 0.7545039765852385 0.568955762478244
+nm 0.9999999999471585 0.9999999999103946
+
+quadraticvalues:
+gd 1.722748281777369 -2.5841224226660557
+gd_dichotomy 1.9999980926513672 -2.999997138977051
+nm 1.9999999997888547 -2.999999999715791
+
+=========================================================
+required precision:0.0001
+
+for rosenbrock:
+gd-iterations:3095
+gd-evaluations:3095
+dich-iterations:1641
+dich-evaluations:68922
+
+for quadratic:
+gd-iterations:2137
+gd-evaluations:2137
+dich-iterations:3
+dich-evaluations:126
+
+rosenbrockvalues:
+gd 0.8973173695908677 0.8047415959952159
+gd_dichotomy 0.9608984212688104 0.9232682091737007
+nm 0.9999999999471585 0.9999999999103946
+
+quadraticvalues:
+gd 1.9722670079744105 -2.9584005119616137
+gd_dichotomy 1.9999999925494194 -2.999999988824129
+nm 1.9999999997888547 -2.999999999715791
+
+=========================================================
+required precision:1e-05
+
+for rosenbrock:
+gd-iterations:8313
+gd-evaluations:8313
+dich-iterations:1251
+dich-evaluations:63801
+
+for quadratic:
+gd-iterations:3288
+gd-evaluations:3288
+dich-iterations:3
+dich-evaluations:153
+
+rosenbrockvalues:
+gd 0.9889196420412187 0.9779174228536326
+gd_dichotomy 0.9962582735608261 0.992532666024448
+nm 0.9999999999471585 0.9999999999103946
+
+quadraticvalues:
+gd 1.9972314667194173 -2.9958472000791296
+gd_dichotomy 2.0000000001164153 -3.000000000174623
+nm 1.9999999997888547 -2.999999999715791
+
+=========================================================
+required precision:1e-06
+
+for rosenbrock:
+gd-iterations:14018
+gd-evaluations:14018
+dich-iterations:4669
+dich-evaluations:280140
+
+for quadratic:
+gd-iterations:4438
+gd-evaluations:4438
+dich-iterations:3
+dich-evaluations:180
+
+rosenbrockvalues:
+gd 0.998883167548619 0.9977631102939291
+gd_dichotomy 0.999619602917893 0.9992395328008162
+nm 0.9999999999471585 0.9999999999103946
+
+quadraticvalues:
+gd 1.9997230685822776 -2.9995846028734166
+gd_dichotomy 1.999999999998181 -2.9999999999972715
+nm 1.9999999997888547 -2.999999999715791
+
+
+Process finished with exit code 0
+

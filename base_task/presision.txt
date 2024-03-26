@@ -1,0 +1,101 @@
+=========================================================
+required precision:0.001
+
+for rosenbrock:
+gd-iterations:16310
+gd-evaluations:16310
+dich-iterations:5923
+dich-evaluations:177690
+
+for quadratic:
+gd-iterations:1000000
+gd-evaluations:1000000
+dich-iterations:2
+dich-evaluations:60
+
+rosenbrockvalues:
+gd 0.9995533998195479 0.999105211496215
+gd_dichotomy 0.9995526917178346 0.9991050690077696
+nm 1.0001075060812563 1.0002075911897421
+
+quadraticvalues:
+gd 1.9999999999999445 -2.999999999999889
+gd_dichotomy 2.001953125 -3.0029296875
+nm 1.9998623431763312 -3.0003861299233128
+
+=========================================================
+required precision:0.0001
+
+for rosenbrock:
+gd-iterations:22073
+gd-evaluations:22073
+dich-iterations:9689
+dich-evaluations:406938
+
+for quadratic:
+gd-iterations:1000000
+gd-evaluations:1000000
+dich-iterations:2
+dich-evaluations:84
+
+rosenbrockvalues:
+gd 0.9999553414450914 0.9999105061741808
+gd_dichotomy 0.9999552954709897 0.999910510644238
+nm 1.0000043858986165 1.0000106409916478
+
+quadraticvalues:
+gd 1.9999999999999445 -2.999999999999889
+gd_dichotomy 2.0001220703125 -3.00018310546875
+nm 2.000015209581492 -2.9999794068082535
+
+=========================================================
+required precision:1e-05
+
+for rosenbrock:
+gd-iterations:27837
+gd-evaluations:27837
+dich-iterations:6934
+dich-evaluations:353634
+
+for quadratic:
+gd-iterations:1000000
+gd-evaluations:1000000
+dich-iterations:2
+dich-evaluations:102
+
+rosenbrockvalues:
+gd 0.9999955334940125 0.9999910491347648
+gd_dichotomy 0.9999955319619693 0.9999910408829235
+nm 1.000000826301518 1.000001498936603
+
+quadraticvalues:
+gd 1.9999999999999445 -2.999999999999889
+gd_dichotomy 1.9999847412109375 -2.9999771118164062
+nm 1.999997219336365 -3.000000539603813
+
+=========================================================
+required precision:1e-06
+
+for rosenbrock:
+gd-iterations:33602
+gd-evaluations:33602
+dich-iterations:9402
+dich-evaluations:564120
+
+for quadratic:
+gd-iterations:1000000
+gd-evaluations:1000000
+dich-iterations:2
+dich-evaluations:120
+
+rosenbrockvalues:
+gd 0.9999995534369374 0.9999991050871078
+gd_dichotomy 0.9999995528365155 0.9999991034846515
+nm 1.0000000659152914 1.0000001145179755
+
+quadraticvalues:
+gd 1.9999999999999445 -2.999999999999889
+gd_dichotomy 2.000001907348633 -3.000002861022949
+nm 2.0000001353600485 -3.0000001161410506
+
+
