@@ -233,32 +233,21 @@ plot_contour_and_trajectory(
 # Пункт 3
 
 def noisy_quadratic(point):
-    noise = random.normalvariate(0, 5)
-    return (point[0] - 2) ** 2 + (point[1] + 3) ** 2 + noise
+    noise = random.normalvariate(0, 0.05)
+    ans = (point[0] - 2) ** 2 + (point[1] + 3) ** 2 + noise
+    return ans
 
-def noisy_rosenbrock(point):
-    noise = random.normalvariate(0, 5)
-    return (1 - point[0]) ** 2 + 100 * (point[1] - point[0] ** 2) ** 2 + noise
 
 start_point_quadratic = [0.5, -2]
-start_point_rosenbrock = [-1, 2]
 
+final_point_nm, trajectory_nm = nelder_mead_with_trajectory(quadratic, start_point_quadratic)
+final_point_nm, len(trajectory_nm)
 final_point_nm, trajectory_nm_noisy = nelder_mead_with_trajectory(noisy_quadratic, start_point_quadratic)
 final_point_nm, len(trajectory_nm_noisy)
 
 plot_contour_and_trajectory(
     noisy_quadratic, None, start_point_quadratic, [0, 3], [-5, -1],
     "Quadratic Function",
-    {"Nelder-Mead with Noisy": trajectory_nm_noisy, "Nelder-Mead": trajectory_quadratic_nm},
+    {"Nelder-Mead with Noisy": trajectory_nm_noisy, "Nelder-Mead": trajectory_nm},
     "noisy_quad_traectories.png"
-)
-
-final_point_nm, trajectory_nm = nelder_mead_with_trajectory(noisy_rosenbrock, start_point_rosenbrock)
-final_point_nm, len(trajectory_nm)
-
-plot_contour_and_trajectory(
-    noisy_rosenbrock, None, start_point_rosenbrock, [-2, 2], [-1, 3],
-    "Rosenbrock Function",
-    {"Nelder-Mead with Noisy": trajectory_nm, "Nelder-Mead": trajectory_rosen_nm},
-    "noisy_rosenbrock_traectories.png"
 )
