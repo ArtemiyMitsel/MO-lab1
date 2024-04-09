@@ -11,6 +11,10 @@ def quadratic(point):
     return (point[0] - 2) ** 2 + (point[1] + 3) ** 2
 
 
+def heavy_quadratic(point):
+    return 100 * (point[0] - 2) ** 2 + 97 * (point[1] + 3) ** 2
+
+
 def rosenbrock_grad(point):
     dfdx0 = -2 * (1 - point[0]) - 400 * point[0] * (point[1] - point[0] ** 2)
     dfdx1 = 2 * 100 * (point[1] - point[0] ** 2)
@@ -23,7 +27,13 @@ def quadratic_grad(point):
     return np.array([dfdx0, dfdx1])
 
 
-def gradient_descent(grad_function, start_point, learning_rate=0.001, tolerance=1e-6, max_iterations=1000000,
+def heavy_quadratic_grad(point):
+    dfdx0 = 200 * point[0] - 400
+    dfdx1 = 194 * point[1] + 582
+    return np.array([dfdx0, dfdx1])
+
+
+def gradient_descent(grad_function, start_point, learning_rate=0.001, tolerance=1e-6, max_iterations=100000,
                      max_evals=1000000):
     point = np.array(start_point, dtype=float)
     evals = 0
@@ -32,25 +42,25 @@ def gradient_descent(grad_function, start_point, learning_rate=0.001, tolerance=
         grad = grad_function(point)
         point_new = point - learning_rate * grad
 
-        '''if np.linalg.norm(point_new - point) < tolerance or point_new[0] == np.nan:  # check
-            break'''
-        if grad_function == rosenbrock_grad:
+        if np.linalg.norm(point_new - point) < tolerance:
+            break
+        '''if grad_function == rosenbrock_grad:
             if np.linalg.norm(point_new - np.array([1, 1])) < tolerance:
                 break
-        if grad_function == quadratic:
+        if grad_function == quadratic or grad_function == heavy_quadratic_grad:
             if np.linalg.norm(point_new - np.array([2, -3])) < tolerance:
-                break
+                break'''
         point = point_new
         evals += 1
         it += 1
         if evals >= max_evals:
             break
-    print("gd-iterations:" + str(it))
-    print("gd-evaluations:" + str(evals))
+    #print("gd-iterations:" + str(it))
+    #print("gd-evaluations:" + str(evals))
     return point
 
 
-def gradient_descent_dichotomy(function, grad_function, start_point, tolerance=1e-6, max_iterations=10000000,
+def gradient_descent_dichotomy(function, grad_function, start_point, tolerance=1e-6, max_iterations=1000000,
                                max_evals=3000000):
     point = np.array(start_point, dtype=float)
     evals = 0
@@ -74,19 +84,19 @@ def gradient_descent_dichotomy(function, grad_function, start_point, tolerance=1
                 break
         alpha_optimal = (alpha_left + alpha_right) / 2
         point_new = point - alpha_optimal * grad
-        if function == rosenbrock:
+        '''if function == rosenbrock:
             if np.linalg.norm(point_new - np.array([1, 1])) < tolerance:
                 break
-        if function == quadratic:
+        if function == quadratic or function == heavy_quadratic:
             if np.linalg.norm(point_new - np.array([2, -3])) < tolerance:
-                break
+                break'''
 
-        '''if np.linalg.norm(point_new - point) < tolerance:
-            break'''
+        if np.linalg.norm(point_new - point) < tolerance:
+            break
         point = point_new
 
-    print("dich-iterations:" + str(it))
-    print("dich-evaluations:" + str(evals))
+    #print("dich-iterations:" + str(it))
+    #print("dich-evaluations:" + str(evals))
     return point
 
 
@@ -100,13 +110,56 @@ def nelder_mead(function, start_point, precision):
     return result.x
 
 
-'''#start_point_rosenbrock = np.array([1, 1])
-#start_point_quadratic = np.array([2, -3])
-start_point_rosenbrock = np.array(st)
-start_point_quadratic = np.array(st)
+def gradient_descent_golden_section(function, grad_function, start_point, tolerance=1e-6,
+                                    max_iterations=1000000):
+    golden_ratio = (np.sqrt(5) - 1) / 2
+    point = np.array(start_point, dtype=float)
+    evals = 0
+    it = 0
+
+    for _ in range(max_iterations):
+        grad = grad_function(point)
+        it += 1
+        evals += 2
+
+        def f(alpha):
+            return function(point - alpha * grad)
+
+        a, b = 0, 1
+        c = b - golden_ratio * (b - a)
+        d = a + golden_ratio * (b - a)
+        while abs(c - d) > tolerance:
+            if f(c) < f(d):
+                b = d
+            else:
+                a = c
+            c = b - golden_ratio * (b - a)
+            d = a + golden_ratio * (b - a)
+        alpha_optimal = (b + a) / 2
+
+        point_new = point - alpha_optimal * grad
+        if np.linalg.norm(point_new - point) < tolerance:
+            break
+        '''if function == rosenbrock:
+            if np.linalg.norm(point_new - np.array([1, 1])) < tolerance:
+                break
+        if function == quadratic or function == heavy_quadratic:
+            if np.linalg.norm(point_new - np.array([2, -3])) < tolerance:
+                break'''
+        point = point_new
+    #print("golden-r-iterations:" + str(it))
+    #print("golden-r-evaluations:" + str(evals))
+
+    return point
+
+
+#start_point_rosenbrock = np.array([0, 0])
+#start_point_quadratic = np.array([0, 0])
+start_point_rosenbrock = np.array([1, 1])
+start_point_quadratic = np.array([2, -3])
 
 results = {}
-print("----------POINTS TOLERANCE/PRECISION----------")
+'''print("----------POINTS TOLERANCE/PRECISION----------")
 for required_tolerance in [1e-3, 1e-4, 1e-5, 1e-6]:
     print("=========================================================")
     #print("required tolerance:" + str(required_tolerance))
@@ -117,61 +170,97 @@ for required_tolerance in [1e-3, 1e-4, 1e-5, 1e-6]:
     gd_rosenbrock_dichotomy = gradient_descent_dichotomy(rosenbrock, rosenbrock_grad, start_point_rosenbrock,
                                                          required_tolerance)
     nm_rosenbrock = nelder_mead(rosenbrock, start_point_rosenbrock, required_tolerance)
+    gr_rosenbrock = gradient_descent_golden_section(rosenbrock, rosenbrock_grad, start_point_rosenbrock,
+                                                    required_tolerance)
     print()
     print("for quadratic:")
     gd_quadratic = gradient_descent(quadratic_grad, start_point_quadratic, 0.001, required_tolerance)
     gd_quadratic_dichotomy = gradient_descent_dichotomy(quadratic, quadratic_grad, start_point_quadratic,
                                                         required_tolerance)
     nm_quadratic = nelder_mead(quadratic, start_point_quadratic, required_tolerance)
+    gr_quadratic = gradient_descent_golden_section(quadratic, quadratic_grad, start_point_quadratic,
+                                                   required_tolerance)
+    print()
+    print("for heavy quadratic:")
+    gd_hquadratic = gradient_descent(heavy_quadratic_grad, start_point_quadratic, 0.001, required_tolerance)
+    gd_hquadratic_dichotomy = gradient_descent_dichotomy(heavy_quadratic, heavy_quadratic_grad, start_point_quadratic,
+                                                         required_tolerance)
+    nm_hquadratic = nelder_mead(heavy_quadratic, start_point_quadratic, required_tolerance)
+    gr_hquadratic = gradient_descent_golden_section(heavy_quadratic, heavy_quadratic_grad, start_point_quadratic,
+                                                    required_tolerance)
     print()
     results["rosenbrock"] = {
         "gd": gd_rosenbrock,
         "gd_dichotomy": gd_rosenbrock_dichotomy,
-        "nm": nm_rosenbrock
+        "nm": nm_rosenbrock,
+        "golden_ration": gr_rosenbrock
     }
 
     results["quadratic"] = {
         "gd": gd_quadratic,
         "gd_dichotomy": gd_quadratic_dichotomy,
-        "nm": nm_quadratic
+        "nm": nm_quadratic,
+        "golden_ration": gr_quadratic
+    }
+
+    results["heavy-quadratic"] = {
+        "gd": gd_hquadratic,
+        "gd_dichotomy": gd_hquadratic_dichotomy,
+        "nm": nm_hquadratic,
+        "golden_ration": gr_hquadratic
     }
     for key in results:
         print(str(key) + "values:")
         for method in results[key]:
             print(method, *results[key][method])
-        print()
+        print()'''
 
 print("----------STARTING POINTS COMPARING----------")
 for d in [-0.4, -0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4]:
-        print("=========================================================")
-        print("start rosenbrock:", str(start_point_rosenbrock[0] + d) + "," + str(start_point_rosenbrock[1] + d))
+    print("=========================================================")
+    print("start rosenbrock:", str(start_point_rosenbrock[0] + d) + "," + str(start_point_rosenbrock[1] + d))
+    print()
+    print("start quadratic:", str(start_point_quadratic[0] + d) + "," + str(start_point_quadratic[1] + d))
+    print()
+    gd_rosenbrock = gradient_descent(rosenbrock_grad, start_point_rosenbrock + d, 0.001, 1e-4)
+    gd_rosenbrock_dichotomy = gradient_descent_dichotomy(rosenbrock, rosenbrock_grad, start_point_rosenbrock + d,
+                                                         1e-4)
+    nm_rosenbrock = nelder_mead(rosenbrock, start_point_rosenbrock + d, 1e-4)
+    gr_rosenbrock = gradient_descent_golden_section(rosenbrock, rosenbrock_grad, start_point_rosenbrock + d,
+                                                    1e-4)
+    gd_quadratic = gradient_descent(quadratic_grad, start_point_quadratic + d, 0.001, 1e-4)
+    gd_quadratic_dichotomy = gradient_descent_dichotomy(quadratic, quadratic_grad, start_point_quadratic + d, 1e-4)
+    nm_quadratic = nelder_mead(quadratic, start_point_quadratic + d, 1e-4)
+    gr_quadratic = gradient_descent_golden_section(quadratic, quadratic_grad, start_point_quadratic + d,
+                                                   1e-4)
+    gd_hquadratic = gradient_descent(heavy_quadratic_grad, start_point_quadratic + d, 0.001, 1e-4)
+    gd_hquadratic_dichotomy = gradient_descent_dichotomy(heavy_quadratic, heavy_quadratic_grad, start_point_quadratic + d,
+                                                         1e-4)
+    nm_hquadratic = nelder_mead(heavy_quadratic, start_point_quadratic + d, 1e-4)
+    gr_hquadratic = gradient_descent_golden_section(heavy_quadratic, heavy_quadratic_grad, start_point_quadratic + d,
+                                                    1e-4)
+    results["rosenbrock"] = {
+        "gd": gd_rosenbrock,
+        "gd_dichotomy": gd_rosenbrock_dichotomy,
+        "nm": nm_rosenbrock,
+        "golden_ration": gr_rosenbrock
+    }
+
+    results["quadratic"] = {
+        "gd": gd_quadratic,
+        "gd_dichotomy": gd_quadratic_dichotomy,
+        "nm": nm_quadratic,
+        "golden_ration": gr_quadratic
+    }
+
+    results["heavy-quadratic"] = {
+        "gd": gd_hquadratic,
+        "gd_dichotomy": gd_hquadratic_dichotomy,
+        "nm": nm_hquadratic,
+        "golden_ration": gr_hquadratic
+    }
+    for key in results:
+        print(str(key) + " values:")
+        for method in results[key]:
+            print(method, *results[key][method])
         print()
-        print("start quadratic:", str(start_point_quadratic[0] + d) + "," + str(start_point_quadratic[1] + d))
-        print()
-        gd_rosenbrock = gradient_descent(rosenbrock_grad, start_point_rosenbrock + d, 0.001, 1e-4)
-        gd_rosenbrock_dichotomy = gradient_descent_dichotomy(rosenbrock, rosenbrock_grad, start_point_rosenbrock + d,
-                                                             1e-4)
-        nm_rosenbrock = nelder_mead(rosenbrock, start_point_rosenbrock + d)
-        gd_quadratic = gradient_descent(quadratic_grad, start_point_quadratic + d, 0.001, 1e-4)
-        gd_quadratic_dichotomy = gradient_descent_dichotomy(quadratic, quadratic_grad, start_point_quadratic + d, 1e-4)
-        nm_quadratic = nelder_mead(quadratic, start_point_quadratic + d)
-        results["rosenbrock"] = {
-            "gd": gd_rosenbrock,
-            "gd_dichotomy": gd_rosenbrock_dichotomy,
-            "nm": nm_rosenbrock
-        }
-
-        results["quadratic"] = {
-            "gd": gd_quadratic,
-            "gd_dichotomy": gd_quadratic_dichotomy,
-            "nm": nm_quadratic
-        }
-        for key in results:
-            print(str(key) + " values:")
-            for method in results[key]:
-                print(method, *results[key][method])
-            print()'''
-
-
-
-

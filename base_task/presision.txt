@@ -6,22 +6,42 @@ gd-iterations:16310
 gd-evaluations:16310
 dich-iterations:5923
 dich-evaluations:177690
+golden-r-iterations:5345
+golden-r-evaluations:10690
 
 for quadratic:
-gd-iterations:1000000
-gd-evaluations:1000000
+gd-iterations:100000
+gd-evaluations:100000
 dich-iterations:2
 dich-evaluations:60
+golden-r-iterations:1
+golden-r-evaluations:2
+
+for heavy quadratic:
+gd-iterations:37
+gd-evaluations:37
+dich-iterations:3
+dich-evaluations:90
+golden-r-iterations:4
+golden-r-evaluations:8
 
 rosenbrockvalues:
 gd 0.9995533998195479 0.999105211496215
 gd_dichotomy 0.9995526917178346 0.9991050690077696
 nm 1.0001075060812563 1.0002075911897421
+golden_ration 0.9995530981174681 0.9991041308080012
 
 quadraticvalues:
 gd 1.9999999999999445 -2.999999999999889
 gd_dichotomy 2.001953125 -3.0029296875
 nm 1.9998623431763312 -3.0003861299233128
+golden_ration 0.0 0.0
+
+heavy-quadraticvalues:
+gd 1.9994807703141462 -2.998973124478094
+gd_dichotomy 1.988983154296875 -2.9947099685668945
+nm 2.0001638213382584 -3.0001457451447373
+golden_ration 1.9993623842221089 -2.997323786506182
 
 =========================================================
 required precision:0.0001
@@ -31,22 +51,42 @@ gd-iterations:22073
 gd-evaluations:22073
 dich-iterations:9689
 dich-evaluations:406938
+golden-r-iterations:9942
+golden-r-evaluations:19884
 
 for quadratic:
-gd-iterations:1000000
-gd-evaluations:1000000
+gd-iterations:100000
+gd-evaluations:100000
 dich-iterations:2
 dich-evaluations:84
+golden-r-iterations:2
+golden-r-evaluations:4
+
+for heavy quadratic:
+gd-iterations:48
+gd-evaluations:48
+dich-iterations:3
+dich-evaluations:126
+golden-r-iterations:3
+golden-r-evaluations:6
 
 rosenbrockvalues:
 gd 0.9999553414450914 0.9999105061741808
 gd_dichotomy 0.9999552954709897 0.999910510644238
 nm 1.0000043858986165 1.0000106409916478
+golden_ration 0.9999553758606797 0.9999104869797184
 
 quadraticvalues:
 gd 1.9999999999999445 -2.999999999999889
 gd_dichotomy 2.0001220703125 -3.00018310546875
 nm 2.000015209581492 -2.9999794068082535
+golden_ration 2.0002139266207206 -3.000320889931081
+
+heavy-quadraticvalues:
+gd 1.9999553985096028 -2.999904235783158
+gd_dichotomy 1.9997268915176392 -2.99921640381217
+nm 1.999979083526913 -2.999978919751955
+golden_ration 1.9992336385467382 -3.0001131587302354
 
 =========================================================
 required precision:1e-05
@@ -56,22 +96,42 @@ gd-iterations:27837
 gd-evaluations:27837
 dich-iterations:6934
 dich-evaluations:353634
+golden-r-iterations:12896
+golden-r-evaluations:25792
 
 for quadratic:
-gd-iterations:1000000
-gd-evaluations:1000000
+gd-iterations:100000
+gd-evaluations:100000
 dich-iterations:2
 dich-evaluations:102
+golden-r-iterations:1
+golden-r-evaluations:2
+
+for heavy quadratic:
+gd-iterations:58
+gd-evaluations:58
+dich-iterations:4
+dich-evaluations:204
+golden-r-iterations:3
+golden-r-evaluations:6
 
 rosenbrockvalues:
 gd 0.9999955334940125 0.9999910491347648
 gd_dichotomy 0.9999955319619693 0.9999910408829235
 nm 1.000000826301518 1.000001498936603
+golden_ration 0.9999955378341586 0.9999910498265133
 
 quadraticvalues:
 gd 1.9999999999999445 -2.999999999999889
 gd_dichotomy 1.9999847412109375 -2.9999771118164062
 nm 1.999997219336365 -3.000000539603813
+golden_ration 0.0 0.0
+
+heavy-quadraticvalues:
+gd 1.999995210951435 -2.9999889196448835
+gd_dichotomy 2.000008759496552 -2.9999935096998587
+nm 2.000000714460839 -3.0000040286199035
+golden_ration 1.9997339142689854 -2.9993925191634543
 
 =========================================================
 required precision:1e-06
@@ -81,21 +141,39 @@ gd-iterations:33602
 gd-evaluations:33602
 dich-iterations:9402
 dich-evaluations:564120
+golden-r-iterations:14387
+golden-r-evaluations:28774
 
 for quadratic:
-gd-iterations:1000000
-gd-evaluations:1000000
+gd-iterations:100000
+gd-evaluations:100000
 dich-iterations:2
 dich-evaluations:120
+golden-r-iterations:2
+golden-r-evaluations:4
+
+for heavy quadratic:
+gd-iterations:69
+gd-evaluations:69
+dich-iterations:4
+dich-evaluations:240
+golden-r-iterations:4
+golden-r-evaluations:8
 
 rosenbrockvalues:
 gd 0.9999995534369374 0.9999991050871078
 gd_dichotomy 0.9999995528365155 0.9999991034846515
 nm 1.0000000659152914 1.0000001145179755
+golden_ration 0.9999995527673547 0.9999991049621608
 
 quadraticvalues:
 gd 1.9999999999999445 -2.999999999999889
 gd_dichotomy 2.000001907348633 -3.000002861022949
 nm 2.0000001353600485 -3.0000001161410506
+golden_ration 2.0000028143367943 -3.0000042215051916
 
-
+heavy-quadraticvalues:
+gd 1.9999995886238606 -2.9999989666697595
+gd_dichotomy 2.000008451967919 -2.9999939824450856
+nm 2.0000000401456184 -3.0000003951618623
+golden_ration 2.000008226113589 -2.9999942790818266

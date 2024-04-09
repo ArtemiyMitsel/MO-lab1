@@ -20,6 +20,14 @@ def rosenbrock_grad(point):
     dfdx1 = 200 * (point[1] - point[0] ** 2)
     return np.array([dfdx0, dfdx1])
 
+def heavy_quadratic(point):
+    return 100 * (point[0] - 2) ** 2 + 97 * (point[1] + 3) ** 2
+
+def heavy_quadratic_grad(point):
+    dfdx0 = 200 * point[0] - 400
+    dfdx1 = 194 * point[1] + 582
+    return np.array([dfdx0, dfdx1])
+
 # Методы оптимизации
 def gradient_descent_with_trajectory(grad_function, start_point, learning_rate=0.001, tolerance=1e-6,
                                      max_iterations=1000000):
@@ -155,6 +163,10 @@ def noisy_quadratic(point):
     ans = (point[0] - 2) ** 2 + (point[1] + 3) ** 2 + noise
     return ans
 
+def noisy_heavy_quadratic(point):
+    noise = random.normalvariate(0, 0.05)
+    return 100 * (point[0] - 2) ** 2 + 97 * (point[1] + 3) ** 2 + noise
+
 # Визуализация
 def plot_contour_and_trajectory(function, grad_function, start_point, xlim, ylim, title_prefix, trajectories, imgName=None):
     x = np.linspace(xlim[0], xlim[1], 400)
@@ -177,6 +189,12 @@ def plot_contour_and_trajectory(function, grad_function, start_point, xlim, ylim
     plt.tight_layout()
     if function == rosenbrock:
         plt.savefig("rosenbrock_traectories.png")
+    elif function == heavy_quadratic:
+
+        if imgName is None:
+            plt.savefig("heavy_quad_traectories.png")
+        else:
+            plt.savefig(imgName)
     else:
         if imgName is None:
             plt.savefig("quad_traectories.png")
@@ -216,6 +234,23 @@ if __name__ == "__main__":
             "Dichotomy": trajectory_rosen_dich,
             "Nelder-Mead": trajectory_rosen_nm,
             "Golden Section": trajectory_rosen_golden
+        }
+    )
+
+    # Оптимизация сложной квадратичной функции
+    _, trajectory_qh_gd = gradient_descent_with_trajectory(heavy_quadratic_grad, start_point_quadratic)
+    _, trajectory_qh_golden = gradient_descent_golden_section_with_trajectory(heavy_quadratic, heavy_quadratic_grad, start_point_quadratic)
+    _, trajectory_qh_dich = gradient_descent_dichotomy_with_trajectory(heavy_quadratic, heavy_quadratic_grad, start_point_quadratic)
+    _, trajectory_qh_nm = nelder_mead_with_trajectory(heavy_quadratic, start_point_quadratic)
+
+    plot_contour_and_trajectory(
+        heavy_quadratic, heavy_quadratic_grad, start_point_quadratic, [0, 3], [-5, -1],
+        "Heavy quadratic Function",
+        {
+            "Gradient Descent": trajectory_qh_gd,
+            "Dichotomy": trajectory_qh_dich,
+            "Nelder-Mead": trajectory_qh_nm,
+            "Golden Section": trajectory_qh_golden
         }
     )
 
@@ -283,7 +318,19 @@ if __name__ == "__main__":
         noisy_quadratic, None, start_point_quadratic, [0, 3], [-5, -1],
         "Quadratic Function",
         {"Nelder-Mead with Noisy": trajectory_nm_noisy, "Nelder-Mead": trajectory_nm},
-        "noisy_quad_traectories.png"
+        "noisy_quad_traectories_nm.png"
     )
+
+    _, tr_dich = gradient_descent_dichotomy_with_trajectory(quadratic, quadratic_grad, start_point_quadratic)
+    _, tr_dich_noisy = gradient_descent_dichotomy_with_trajectory(noisy_quadratic, quadratic_grad, start_point_quadratic)
+
+    plot_contour_and_trajectory(
+        noisy_quadratic, None, start_point_quadratic, [0, 3], [-5, -1],
+        "Quadratic Function",
+        {"Dichotomy with Noisy": tr_dich_noisy, "Dichotomy": tr_dich},
+        "noisy_quad_traectories_dich.png"
+    )
+
+
 
 
