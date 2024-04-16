@@ -12,7 +12,7 @@ def quadratic(point):
 
 
 def heavy_quadratic(point):
-    return 100 * (point[0] - 2) ** 2 + 97 * (point[1] + 3) ** 2
+    return (point[0] - 2) ** 2 + 0.0004 * (point[1] + 3) ** 2
 
 
 def rosenbrock_grad(point):
@@ -28,13 +28,14 @@ def quadratic_grad(point):
 
 
 def heavy_quadratic_grad(point):
-    dfdx0 = 200 * point[0] - 400
-    dfdx1 = 194 * point[1] + 582
-    return np.array([dfdx0, dfdx1])
+    x, y = point
+    df_dx = 2 * (x - 2)
+    df_dy = 0.0008 * (y + 3)
+    return np.array([df_dx, df_dy])
 
 
-def gradient_descent(grad_function, start_point, learning_rate=0.001, tolerance=1e-6, max_iterations=100000,
-                     max_evals=1000000):
+def gradient_descent(grad_function, start_point, learning_rate=0.001, tolerance=1e-6, max_iterations=1000000,
+                     max_evals=10000000):
     point = np.array(start_point, dtype=float)
     evals = 0
     it = 0
@@ -162,8 +163,8 @@ results = {}
 '''print("----------POINTS TOLERANCE/PRECISION----------")
 for required_tolerance in [1e-3, 1e-4, 1e-5, 1e-6]:
     print("=========================================================")
-    #print("required tolerance:" + str(required_tolerance))
-    print("required precision:" + str(required_tolerance))
+    print("required tolerance:" + str(required_tolerance))
+    #print("required precision:" + str(required_tolerance))
     print()
     print("for rosenbrock:")
     gd_rosenbrock = gradient_descent(rosenbrock_grad, start_point_rosenbrock, 0.001, required_tolerance)

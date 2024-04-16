@@ -3,30 +3,38 @@ from scipy.optimize import minimize
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 # функции и градиенты
 def quadratic(point):
     return (point[0] - 2) ** 2 + (point[1] + 3) ** 2
+
 
 def quadratic_grad(point):
     dfdx0 = 2 * (point[0] - 2)
     dfdx1 = 2 * (point[1] + 3)
     return np.array([dfdx0, dfdx1])
 
+
 def rosenbrock(point):
     return (1 - point[0]) ** 2 + 100 * (point[1] - point[0] ** 2) ** 2
+
 
 def rosenbrock_grad(point):
     dfdx0 = -2 * (1 - point[0]) - 400 * point[0] * (point[1] - point[0] ** 2)
     dfdx1 = 200 * (point[1] - point[0] ** 2)
     return np.array([dfdx0, dfdx1])
 
+
 def heavy_quadratic(point):
-    return 100 * (point[0] - 2) ** 2 + 97 * (point[1] + 3) ** 2
+    return (point[0] - 2) ** 2 + 0.0004 * (point[1] + 3) ** 2
+
 
 def heavy_quadratic_grad(point):
-    dfdx0 = 200 * point[0] - 400
-    dfdx1 = 194 * point[1] + 582
-    return np.array([dfdx0, dfdx1])
+    x, y = point
+    df_dx = 2 * (x - 2)
+    df_dy = 0.0008 * (y + 3)
+    return np.array([df_dx, df_dy])
+
 
 # Методы оптимизации
 def gradient_descent_with_trajectory(grad_function, start_point, learning_rate=0.001, tolerance=1e-6,
@@ -41,6 +49,7 @@ def gradient_descent_with_trajectory(grad_function, start_point, learning_rate=0
         point = point_new
         trajectory.append(point.copy())
     return point, trajectory
+
 
 def gradient_descent_dichotomy_with_trajectory(function, grad_function, start_point, tolerance=1e-6,
                                                max_iterations=10000000):
@@ -66,6 +75,7 @@ def gradient_descent_dichotomy_with_trajectory(function, grad_function, start_po
         point = point_new
         trajectory.append(point.copy())
     return point, trajectory
+
 
 def nelder_mead_with_trajectory(function, start_point, precision=1e-6):
     trajectory = [np.array(start_point)]
@@ -113,48 +123,58 @@ def gradient_descent_golden_section_with_trajectory(function, grad_function, sta
 
     return point, trajectory
 
+
 # Доп. задание 2
 
 
 # Пункт 1
 def extended_rosenbrock(x):
-    return sum(100.0*(x[i+1]-x[i]**2.0)**2.0 + (1-x[i])**2.0 for i in range(len(x)-1))
+    return sum(100.0 * (x[i + 1] - x[i] ** 2.0) ** 2.0 + (1 - x[i]) ** 2.0 for i in range(len(x) - 1))
+
 
 def extended_rosenbrock_grad(x):
     grad = np.zeros_like(x)
-    grad[0] = -400.0*x[0]*(x[1]-x[0]**2) - 2.0*(1-x[0])
-    for i in range(1,len(x)-1):
-        grad[i] = 200.0*(x[i]-x[i-1]**2) - 400.0*(x[i+1]-x[i]**2)-(2.0*(1-x[i]))
-    grad[-1] = 200.0*(x[-1]-x[-2]**2)
+    grad[0] = -400.0 * x[0] * (x[1] - x[0] ** 2) - 2.0 * (1 - x[0])
+    for i in range(1, len(x) - 1):
+        grad[i] = 200.0 * (x[i] - x[i - 1] ** 2) - 400.0 * (x[i + 1] - x[i] ** 2) - (2.0 * (1 - x[i]))
+    grad[-1] = 200.0 * (x[-1] - x[-2] ** 2)
     return grad
+
 
 # Пункт 2
 
 def goldstein_price(point):
     x, y = point[0], point[1]
-    fact1a = (x + y + 1)**2
-    fact1b = 19 - 14*x + 3*x**2 - 14*y + 6*x*y + 3*y**2
-    fact1 = 1 + fact1a*fact1b
-    fact2a = (2*x - 3*y)**2
-    fact2b = 18 - 32*x + 12*x**2 + 48*y - 36*x*y + 27*y**2
-    fact2 = 30 + fact2a*fact2b
-    return fact1*fact2
+    fact1a = (x + y + 1) ** 2
+    fact1b = 19 - 14 * x + 3 * x ** 2 - 14 * y + 6 * x * y + 3 * y ** 2
+    fact1 = 1 + fact1a * fact1b
+    fact2a = (2 * x - 3 * y) ** 2
+    fact2b = 18 - 32 * x + 12 * x ** 2 + 48 * y - 36 * x * y + 27 * y ** 2
+    fact2 = 30 + fact2a * fact2b
+    return fact1 * fact2
+
 
 def goldstein_price_grad(point):
     x, y = point[0], point[1]
-    dfdx = ((x + y + 1)*(80*x**3 - 170*x**2 + 86*x + 116*y**2 + 4*y + 64) - (2*x - 3*y)*(64*x**3 - 276*x**2 + 384*x - 200*y**2 - 144*y - 24))/(4*(x**2 - 4*x*y + 4*y**2 + 1)**2)
-    dfdy = ((x + y + 1)*(-12*x**2 + 16*x - 2*y**2 + 16) + (2*x - 3*y)*(-48*x**2 + 156*x - 222*y**2 - 58*y + 84))/(4*(x**2 - 4*x*y + 4*y**2 + 1)**2)
+    dfdx = ((x + y + 1) * (80 * x ** 3 - 170 * x ** 2 + 86 * x + 116 * y ** 2 + 4 * y + 64) - (2 * x - 3 * y) * (
+                64 * x ** 3 - 276 * x ** 2 + 384 * x - 200 * y ** 2 - 144 * y - 24)) / (
+                       4 * (x ** 2 - 4 * x * y + 4 * y ** 2 + 1) ** 2)
+    dfdy = ((x + y + 1) * (-12 * x ** 2 + 16 * x - 2 * y ** 2 + 16) + (2 * x - 3 * y) * (
+                -48 * x ** 2 + 156 * x - 222 * y ** 2 - 58 * y + 84)) / (4 * (x ** 2 - 4 * x * y + 4 * y ** 2 + 1) ** 2)
     return np.array([dfdx, dfdy])
 
+
 def rastrigin(point):
-    x, y  = point[0], point[1]
-    return 10*2 + x**2 - 10*np.cos(2*np.pi*x) + y**2 - 10*np.cos(2*np.pi*y)
+    x, y = point[0], point[1]
+    return 10 * 2 + x ** 2 - 10 * np.cos(2 * np.pi * x) + y ** 2 - 10 * np.cos(2 * np.pi * y)
+
 
 def rastrigin_grad(point):
     x, y = point[0], point[1]
-    dfdx = 2*x + 20*np.pi*x*np.sin(2*np.pi*x)
-    dfdy = 2*y + 20*np.pi*y*np.sin(2*np.pi*y)
+    dfdx = 2 * x + 20 * np.pi * x * np.sin(2 * np.pi * x)
+    dfdy = 2 * y + 20 * np.pi * y * np.sin(2 * np.pi * y)
     return np.array([dfdx, dfdy])
+
 
 # Пункт 3
 
@@ -163,12 +183,15 @@ def noisy_quadratic(point):
     ans = (point[0] - 2) ** 2 + (point[1] + 3) ** 2 + noise
     return ans
 
+
 def noisy_heavy_quadratic(point):
     noise = random.normalvariate(0, 0.05)
     return 100 * (point[0] - 2) ** 2 + 97 * (point[1] + 3) ** 2 + noise
 
+
 # Визуализация
-def plot_contour_and_trajectory(function, grad_function, start_point, xlim, ylim, title_prefix, trajectories, imgName=None):
+def plot_contour_and_trajectory(function, grad_function, start_point, xlim, ylim, title_prefix, trajectories,
+                                imgName=None):
     x = np.linspace(xlim[0], xlim[1], 400)
     y = np.linspace(ylim[0], ylim[1], 400)
     X, Y = np.meshgrid(x, y)
@@ -202,7 +225,6 @@ def plot_contour_and_trajectory(function, grad_function, start_point, xlim, ylim
             plt.savefig(imgName)
 
 
-
 if __name__ == "__main__":
     # Точки старта для различных функций
     start_point_quadratic = [0.5, -2]
@@ -210,20 +232,24 @@ if __name__ == "__main__":
 
     # Оптимизация квадратичной функции
     _, trajectory = gradient_descent_with_trajectory(quadratic_grad, start_point_quadratic)
-    _, trajectory_quad_golden = gradient_descent_golden_section_with_trajectory(quadratic, quadratic_grad, start_point_quadratic)
+    _, trajectory_quad_golden = gradient_descent_golden_section_with_trajectory(quadratic, quadratic_grad,
+                                                                                start_point_quadratic)
     _, trajectory_dich = gradient_descent_dichotomy_with_trajectory(quadratic, quadratic_grad, start_point_quadratic)
     _, trajectory_quadratic_nm = nelder_mead_with_trajectory(quadratic, start_point_quadratic)
 
     plot_contour_and_trajectory(
         quadratic, quadratic_grad, start_point_quadratic, [0, 3], [-5, -1],
         "Quadratic Function",
-        {"Gradient Descent": trajectory, "Dichotomy": trajectory_dich, "Nelder-Mead": trajectory_quadratic_nm, "Golden Section": trajectory_quad_golden }
+        {"Gradient Descent": trajectory, "Dichotomy": trajectory_dich, "Nelder-Mead": trajectory_quadratic_nm,
+         "Golden Section": trajectory_quad_golden}
     )
 
     # Оптимизация функции Розенброка
     _, trajectory_rosen_gd = gradient_descent_with_trajectory(rosenbrock_grad, start_point_rosenbrock)
-    _, trajectory_rosen_golden = gradient_descent_golden_section_with_trajectory(rosenbrock, rosenbrock_grad, start_point_rosenbrock)
-    _, trajectory_rosen_dich = gradient_descent_dichotomy_with_trajectory(rosenbrock, rosenbrock_grad, start_point_rosenbrock)
+    _, trajectory_rosen_golden = gradient_descent_golden_section_with_trajectory(rosenbrock, rosenbrock_grad,
+                                                                                 start_point_rosenbrock)
+    _, trajectory_rosen_dich = gradient_descent_dichotomy_with_trajectory(rosenbrock, rosenbrock_grad,
+                                                                          start_point_rosenbrock)
     _, trajectory_rosen_nm = nelder_mead_with_trajectory(rosenbrock, start_point_rosenbrock)
 
     plot_contour_and_trajectory(
@@ -239,8 +265,10 @@ if __name__ == "__main__":
 
     # Оптимизация сложной квадратичной функции
     _, trajectory_qh_gd = gradient_descent_with_trajectory(heavy_quadratic_grad, start_point_quadratic)
-    _, trajectory_qh_golden = gradient_descent_golden_section_with_trajectory(heavy_quadratic, heavy_quadratic_grad, start_point_quadratic)
-    _, trajectory_qh_dich = gradient_descent_dichotomy_with_trajectory(heavy_quadratic, heavy_quadratic_grad, start_point_quadratic)
+    _, trajectory_qh_golden = gradient_descent_golden_section_with_trajectory(heavy_quadratic, heavy_quadratic_grad,
+                                                                              start_point_quadratic)
+    _, trajectory_qh_dich = gradient_descent_dichotomy_with_trajectory(heavy_quadratic, heavy_quadratic_grad,
+                                                                       start_point_quadratic)
     _, trajectory_qh_nm = nelder_mead_with_trajectory(heavy_quadratic, start_point_quadratic)
 
     plot_contour_and_trajectory(
@@ -273,7 +301,6 @@ if __name__ == "__main__":
 
         # Размерность датасетов
         print(len(trajectory_ext_gd), len(trajectory_ext_dich), len(trajectory_ext_nm))
-
 
     # Пункт 2
 
@@ -322,7 +349,8 @@ if __name__ == "__main__":
     )
 
     _, tr_dich = gradient_descent_dichotomy_with_trajectory(quadratic, quadratic_grad, start_point_quadratic)
-    _, tr_dich_noisy = gradient_descent_dichotomy_with_trajectory(noisy_quadratic, quadratic_grad, start_point_quadratic)
+    _, tr_dich_noisy = gradient_descent_dichotomy_with_trajectory(noisy_quadratic, quadratic_grad,
+                                                                  start_point_quadratic)
 
     plot_contour_and_trajectory(
         noisy_quadratic, None, start_point_quadratic, [0, 3], [-5, -1],
@@ -330,7 +358,3 @@ if __name__ == "__main__":
         {"Dichotomy with Noisy": tr_dich_noisy, "Dichotomy": tr_dich},
         "noisy_quad_traectories_dich.png"
     )
-
-
-
-
